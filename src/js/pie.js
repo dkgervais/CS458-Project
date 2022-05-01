@@ -104,8 +104,8 @@ function getPartyCount() {
         } else {
             registeredCount = response;
             console.log("Registered voter count:" + registeredCount);
-            turnoutData.push({ x: "Did not vote", value: (registeredCount-voterCount).toString()});
             turnoutData.push({ x: "Voted", value: voterCount.toString()});
+            turnoutData.push({ x: "Did not vote", value: (registeredCount-voterCount).toString()});
         }
     });
     document.getElementById("button1").disabled = true;
