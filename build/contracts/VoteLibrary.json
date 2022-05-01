@@ -7,7 +7,7 @@
   "sourceMap": "36:415:2:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
   "deployedSourceMap": "36:415:2:-;;;;;;;;",
   "source": "pragma solidity >=0.4.21 <0.7.0;\r\n\r\nlibrary VoteLibrary\r\n{\r\n    struct Vote\r\n    {\r\n        uint id;\r\n        uint time;\r\n        string PartyName;\r\n        string adhaar;\r\n        string constituency;\r\n    }\r\n    struct Party\r\n    {\r\n        string name;\r\n        uint voteCount;\r\n    }\r\n    struct Identity\r\n    {\r\n        string email;\r\n        string birthdate;\r\n        string gender;\r\n        string affiliation;\r\n        string state;\r\n    }\r\n}",
-  "sourcePath": "C:\\Users\\Danielle\\Documents\\CS415\\cs458\\CS458-Project\\contracts\\VoteLibrary.sol",
+  "sourcePath": "C:\\Users\\Edwin\\OneDrive\\Documents\\CS458\\CS458-Project\\contracts\\VoteLibrary.sol",
   "ast": {
     "absolutePath": "project:/contracts/VoteLibrary.sol",
     "exportedSymbols": {
@@ -807,8 +807,8 @@
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.6",
-  "updatedAt": "2022-04-29T18:43:21.594Z",
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-05-01T04:04:00.557Z",
   "devdoc": {
     "methods": {}
   },
