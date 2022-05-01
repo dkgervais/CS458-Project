@@ -18,10 +18,10 @@ function loadChart() {
 
     var genderChart = anychart.pie();
     genderChart.title("Voters By Gender");
-    
-    console.log("Test Male Count:" + MaleCount + " Female Count:" + FemaleCount);
-    genderData.push({ x: "Male", value: MaleCount.toString() });
-    genderData.push({ x: "Female", value: FemaleCount.toString() });
+
+    console.log("Loading Gender Data Male Count:" + MaleCount + " Female Count:" + FemaleCount);
+    genderData.push({ x: "Male", value: MaleCount.toString(), normal: {fill: "#059BE6" } });
+    genderData.push({ x: "Female", value: FemaleCount.toString(), normal: {fill: "#E16BCF" }});
 
     console.log(genderData);
     genderChart.data(genderData);
@@ -41,8 +41,6 @@ function getData() {
             });
     }
     console.log(data);
-
-
     
     //gets data for Voters By Gender piechart
     for (let i = 1; i <= voterCount; i++) {
