@@ -11,7 +11,6 @@ contract Users
         string email;
         bytes32 password;
         bool registered;
-        // Add any data here about the voter that we also need
     }
 
     mapping(string => User) private users;

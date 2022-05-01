@@ -34,7 +34,7 @@ function createParty() {
 
 function generateNewVote() {
     var partyNamed = document.getElementById("partyNamed").value;
-    var see = confirm("You have voted " + partyNamed);
+    var see = confirm("Confirm you want to vote for: " + partyNamed);
     if (see) {
         generateVote();
     } else {
@@ -46,14 +46,17 @@ function generateNewVote() {
 function generateVote() {
     var partyNamed = document.getElementById("partyNamed").value;
     var email = document.getElementById("email").value;
-    VoteTrackerContract.methods.generateVote(partyNamed, email, "USA")
+    var password = document.getElementById("password").value;
+    VoteTrackerContract.methods.generateVote(partyNamed, email, password, "USA")
         .send()
         .then(result => {
             if (result.status === true) {
-                alert("Success");
+                alert("Success, you have voted.");
                 console.log(result);
                 window.location.href = "./VoterLogin.html";
             }
+        }).catch(err => {
+            alert("Failure. You have already voted or your login information is incorrect.");
         });
 }
 
@@ -88,7 +91,7 @@ function verify() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    VoteTrackerContract.methods.verifyUser(email)
+    VoteTrackerContract.methods.verifyUser(email, password)
         .send()
         .then(result => {
             if (result.status === true) {
@@ -96,23 +99,33 @@ function verify() {
             } else {
                 alert("Failure to log in. Please try again.")
             }
+        }).catch(err => {
+            alert("Failure to log in. Please try again.");
+            console.log(err);
         });
 }
 
 function register() {
     var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
     var birthdate = document.getElementById("birthdate").value;
     var gender = document.getElementById("gender").value;
     var affiliation = document.getElementById("affiliation").value;
     var state = document.getElementById("state").value;
 
-    VoteTrackerContract.methods.registerUser(email, birthdate, gender, affiliation, state)
+    VoteTrackerContract.methods.registerUser(email, password, birthdate, gender, affiliation, state)
         .send()
         .then(result => {
             if (result.status === true) {
                 alert("Success! Please verify to log-in.");
                 console.log(result);
+            } else {
+                alert("Failure. This account may already exist.");
+                console.log(result);
             }
+        }).catch(err => {
+            alert("Failure. This account may already exist.");
+            console.log(err);
         });
 }
 
