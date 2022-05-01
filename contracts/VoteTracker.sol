@@ -1,6 +1,7 @@
 pragma solidity >=0.4.21 <0.7.0;
 pragma experimental ABIEncoderV2;
 import "./VoteLibrary.sol";
+import "./Users.sol";
 
 contract VoteTracker
 {
@@ -15,31 +16,36 @@ contract VoteTracker
     mapping(uint => VoteLibrary.Identity) public IdentityStore;
     uint256 public identityCount = 0;
 
-    function registerUser(string memory _email, string memory _birthdate, string memory _gender, string memory _affiliation, string memory _state) public returns(uint256)
+    Users users = new Users();
+
+    function registerUser(string memory _email, string memory _password, string memory _birthdate, string memory _gender, string memory _affiliation, string memory _state) public returns(uint256)
     {
         require(checkIfIdCanExist(_email));
+        require(users.register(_email, _password));
         identityCount++;
         IdentityStore[identityCount] = VoteLibrary.Identity(_email, _birthdate, _gender, _affiliation, _state);
         emit IdentityCreate(_email, _birthdate, _gender, _affiliation, _state);
     }
 
-    function verifyUser(string memory _email) public returns(bool)
+    function verifyUser(string memory _email, string memory _password) public returns(bool)
     {
         require(!checkIfIdCanExist(_email));
+        require(users.login(_email, _password));
 
         return true;
     }
 
-    function generateVote(string memory _partyName, string memory email, string memory _constituency) public returns(uint256)
+    function generateVote(string memory _partyName, string memory _email, string memory _password, string memory _constituency) public returns(uint256)
     {
-        require(!checkIfIdCanExist(email));
-        require(checkIfCanVote(email));
+        require(!checkIfIdCanExist(_email));
+        require(checkIfCanVote(_email));
+        require(users.login(_email, _password));
         require(!checkIfCanExist(_partyName));
         voterCount++;
-        VoteStore[voterCount] = VoteLibrary.Vote(voterCount, block.timestamp, _partyName, email, _constituency);
+        VoteStore[voterCount] = VoteLibrary.Vote(voterCount, block.timestamp, _partyName, _email, _constituency);
         uint partyIndex = getParty(_partyName);
         PartyStore[partyIndex].voteCount++;
-        emit VoteGenerate(voterCount, block.timestamp, _partyName, email, _constituency);
+        emit VoteGenerate(voterCount, block.timestamp, _partyName, _email, _constituency);
     }
     
     function createParty(string memory _name) public returns(uint256)
@@ -70,6 +76,10 @@ contract VoteTracker
 
     function checkIfIdCanExist(string memory _namered) private returns(bool)
     {
+        if (users.exists(_namered)) {
+            return false;
+        }
+
         for(uint i=1;i<=identityCount;i++)
         {
             string memory idNamed = IdentityStore[i].email;
