@@ -117,6 +117,14 @@ contract VoteTracker
         return (PartyStore[_id].voteCount,PartyStore[_id].name);
     }
 
+    function getGenders() public returns (string gender){
+        string genders;
+        for(uint i=1;i<=voterCount;i++){
+            genders += IdentityStore[i].gender;
+        }
+        return genders;
+    }
+
     event IdentityCreate(string email, string birthdate, string gender, string affiliation, string state);
     event PartyCreate(string name, uint voteCount);
     event VoteGenerate(uint voteCount, uint time, string partyName, string adhaar, string constituency);

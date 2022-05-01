@@ -23,8 +23,18 @@ function getData() {
             });
     }
     console.log(data);
+
     document.getElementById("button2").disabled = true;
     document.getElementById("button3").disabled = false;
+    
+    VoteTrackerContract.methods.getGenders().call((error, response) => {
+        if (error) {
+            console.log(error);
+        } else {
+            const genders = response;
+            console.log("genders:" + genders);
+        }
+    });
 }
 
 function getPartyCount() {
