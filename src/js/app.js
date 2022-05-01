@@ -109,10 +109,25 @@ function register() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
     var birthdate = document.getElementById("birthdate").value;
-    var gender = document.getElementById("gender").value;
+    var gender = document.getElementById("gender").value.toUpperCase();
     var affiliation = document.getElementById("affiliation").value;
     var state = document.getElementById("state").value;
 
+	wrong = [];
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        wrong.push("email");
+    }
+    if (!/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/.test(birthdate)) {
+        wrong.push("birthdate");
+    }
+    if (gender !== 'M' && gender !== 'F') {
+    	wrong.push("gender");
+    }
+    if (wrong.length > 0) {
+        alert("The following fields are in the incorrect format: " + wrong);
+        return
+    }
+    
     VoteTrackerContract.methods.registerUser(email, password, birthdate, gender, affiliation, state)
         .send()
         .then(result => {
