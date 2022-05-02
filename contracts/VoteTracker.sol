@@ -15,7 +15,8 @@ contract VoteTracker
 
     mapping(uint => VoteLibrary.Identity) public IdentityStore;
     uint256 public identityCount = 0;
-
+    
+    mapping(bytes32 => uint) public voters;
     Users users = new Users();
 
     function registerUser(string memory _email, string memory _password, string memory _birthdate, string memory _gender, string memory _affiliation, string memory _state) public returns(uint256)
@@ -106,6 +107,20 @@ contract VoteTracker
         return true;
     }
 
+    function runAudit() public returns(bool)
+    {
+        for(uint i=1;i<=voterCount;i++)
+        {
+            string memory voteNamed = VoteStore[i].adhaar;
+            if(voters[keccak256(abi.encodePacked((voteNamed)))] == 1)
+            {
+                return false;
+            }
+            voters[keccak256(abi.encodePacked((voteNamed)))] = 1;
+        }
+        return true;
+    }
+    
     function getParty(string memory _partyNamer) private returns (uint)
     {
         for(uint i=1;i<=partyCount;i++)
