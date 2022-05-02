@@ -151,11 +151,30 @@ function adminLogin() {
     .send()
     .then(result => {
         if (result.status === true) {
-            window.location.href = "./PartyRegistration.html";
+            window.location.href = "./AdminPortal.html";
         } else {
             alert("Incorrect admin key.");
         }
     }).catch(err => {
         alert("Incorrect admin key.");
     });
+}
+
+function runAudit() {
+    var nobodyVotedTwice;
+    VoteTrackerContract.methods.runAudit()
+        .call((error, response) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(response);
+                nobodyVotedTwice = response
+                if (nobodyVotedTwice){
+                    alert("Nobody voted twice!");
+                }
+                else{
+                    alert("Somebody voted twice! This should not happen!");
+                }
+            }
+        });
 }
