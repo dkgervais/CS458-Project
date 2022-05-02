@@ -139,6 +139,10 @@ contract VoteTracker
         return voterCount;
     }
 
+    function getIdentityCount() public returns (uint)
+    {
+        return identityCount;
+    }
     event IdentityCreate(string email, string birthdate, string gender, string affiliation, string state);
     event PartyCreate(string name, uint voteCount);
     event VoteGenerate(uint voteCount, uint time, string partyName, string adhaar, string constituency);
