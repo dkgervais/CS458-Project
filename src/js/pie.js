@@ -1,6 +1,8 @@
 var partyCount;
 var voterCount;
+var registeredCount;
 var data = [];
+var turnoutData = [];
 var genderData = [];
 var MaleCount = 0;
 var FemaleCount = 0;
@@ -10,7 +12,7 @@ document.getElementById("button3").disabled = true;
 
 function loadChart() {
     var chart = anychart.pie();
-    chart.title("RESULTS");
+    chart.title("Results");
     console.log(data);
     chart.data(data);
     chart.container('container');
@@ -27,6 +29,14 @@ function loadChart() {
     genderChart.data(genderData);
     genderChart.container('container2');
     genderChart.draw();
+
+    var turnoutChart = anychart.pie();
+    turnoutChart.title("Voter Turnout");
+
+    console.log(turnoutData);
+    turnoutChart.data(turnoutData);
+    turnoutChart.container('container3');
+    turnoutChart.draw();
 
     document.getElementById("button3").disabled = true;
 }
@@ -87,6 +97,17 @@ function getPartyCount() {
         }
     });
     
+    VoteTrackerContract.methods.getIdentityCount()
+    .call((error, response) => {
+        if (error) {
+            console.log(error);
+        } else {
+            registeredCount = response;
+            console.log("Registered voter count:" + registeredCount);
+            turnoutData.push({ x: "Voted", value: voterCount.toString()});
+            turnoutData.push({ x: "Did not vote", value: (registeredCount-voterCount).toString()});
+        }
+    });
     document.getElementById("button1").disabled = true;
     document.getElementById("button2").disabled = false;
 }
